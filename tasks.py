@@ -41,7 +41,7 @@ def test(ctx, profile=False):
         '--benchmark-skip',
         '--profile' if profile else None,
     )
-    lrun('py.test {0}'.format(kwargs), pty=True)
+    lrun('python -m pytest {0}'.format(kwargs), pty=True)
 
 
 @task
@@ -55,7 +55,7 @@ def benchmark(ctx, max_time=2, save=False, compare=False, histogram=False, profi
         '--benchmark-histogram=histograms/{0:%Y%m%d-%H%M%S}'.format(ts) if histogram else None,
         '--benchmark-cprofile=tottime' if profile else None,
     )
-    cmd = 'pytest tests/benchmarks {0}'.format(kwargs)
+    cmd = 'python -m pytest tests/benchmarks {0}'.format(kwargs)
     if tox:
         envs = lrun('tox -l', hide=True).stdout.splitlines()
         envs = ','.join(e for e in envs if e != 'doc')
@@ -67,7 +67,7 @@ def benchmark(ctx, max_time=2, save=False, compare=False, histogram=False, profi
 def cover(ctx, html=False):
     '''Run tests suite with coverage'''
     extra = '--cov-report html' if html else ''
-    lrun('pytest --benchmark-skip --cov flask_restplus --cov-report term {0}'.format(extra), pty=True)
+    lrun('python -m pytest --benchmark-skip --cov flask_restplus --cov-report term {0}'.format(extra), pty=True)
 
 
 @task
